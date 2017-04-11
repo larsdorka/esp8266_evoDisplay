@@ -1,0 +1,19 @@
+.style-box {
+    margin: 8px;
+    padding: 8px;
+    border: 1px solid #AAAAAA;
+    background-color: #EEEEEE;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.style-box-title {
+    font-weight: bold;
+    font-size: small;
+    margin-bottom: 4px;
+}
+
+.style-box-button {
+    width: 100px;
+}

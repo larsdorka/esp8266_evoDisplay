@@ -1,0 +1,233 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Display WebService",
+    "description": "Rest API for Wibond display",
+    "termsOfService": "Internal use only",
+    "contact": {
+      "name": "evopro systems engineering AG",
+      "url": "http://www.evopro-ag.de",
+      "email": "info@evopro-ag.de"
+    },
+    "license": {
+      "name": "Private License",
+      "url": "http://www.evopro-ag.de"
+    }
+  },
+  "host": "display.evopro-gmbh.local",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/clear": {
+      "get": {
+        "tags": [
+          "Display"
+        ],
+        "summary": "clear the display",
+        "operationId": "ClearDisplay",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/setdisplay": {
+      "post": {
+        "tags": [
+          "Display"
+        ],
+        "summary": "set all display options",
+        "operationId": "SetDisplay",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "displayoptions",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DisplayOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/setcolorandtext": {
+      "post": {
+        "tags": [
+          "Display"
+        ],
+        "summary": "set the color and text string",
+        "operationId": "SetColorAndText",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "colorandtext",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ColorAndText"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/setcolor": {
+      "post": {
+        "tags": [
+          "Display"
+        ],
+        "summary": "only set the color string",
+        "operationId": "SetColor",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "color",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Color"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/settext": {
+      "post": {
+        "tags": [
+          "Display"
+        ],
+        "summary": "only set the text string",
+        "operationId": "SetText",
+        "consumes": [
+          "application/json",
+          "text/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "text",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "DisplayOptions": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string"
+            }
+          }
+        },
+        "text": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ColorAndText": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "Color": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "Text": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
