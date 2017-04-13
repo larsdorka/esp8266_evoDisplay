@@ -45,7 +45,9 @@ int i_packetSize = 0;
 char data[200];
 int i_wwwPort = 80;
 String s_body = "";
-String displayLog[4] = {"", "", "", ""};
+String s_logApi = "";
+String s_logText = "";
+String s_logColors = "";
 boolean b_connected = false;
 boolean b_ledState = false;
 
@@ -95,23 +97,21 @@ void setLCD() {
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.setFont(ArialMT_Plain_10);
   display.drawString(0, 0, "UDP: " + WiFi.localIP().toString() + ":" + String(i_udpPort));
-  for (int i=0; i<4; i++) {
-    display.drawString(0,i * 10 + 20, displayLog[i]);
-  }
+  display.drawString(0, 20, "API: " + s_logApi);
+  display.drawString(0, 30, "text: " + s_logText);
+  display.drawString(0, 40, "colors: " + s_logColors);
 }
 
-void writeToDisplay(String s_text, boolean b_log) {
-  if (b_log) writeToLog(s_text);
+void writeToDisplay(String s_text, boolean isText) {
+  if (isText) {
+    s_logText = s_text;
+  }
+  else {
+    s_logColors = s_text;
+  }
   Serial1.write(27);
   Serial1.print(s_text);
   Serial1.write(13);
-}
-
-void writeToLog(String s_text) {
-  displayLog[3] = displayLog[2];
-  displayLog[2] = displayLog[1];
-  displayLog[1] = displayLog[0];
-  displayLog[0] = s_text;
 }
 
 void processApiSetColorAndText(String parseBody) {
@@ -119,7 +119,7 @@ void processApiSetColorAndText(String parseBody) {
   StaticJsonBuffer<512> jsonBuffer;
   JsonObject& root = jsonBuffer.parseObject(parseBody);
   String s_color = String((const char*)root["color"]);
-  writeToDisplay(s_color, true);
+  writeToDisplay(s_color, false);
   String s_text = String((const char*)root["text"]);
   writeToDisplay(s_text, true);
 }
@@ -146,13 +146,13 @@ void processApiSetDisplay(String parseBody) {
     s_colorContent = String((const char*)root["color"]["content"]);
   }
   String s_color = "0E" + s_colorContent;
-  writeToDisplay(s_color, true);
+  writeToDisplay(s_color, false);
   writeToDisplay(s_text, true);
 }
 
 void processApiClear() {
   String s_text = "0A0                              ";
-  writeToDisplay(s_text, false);
+  writeToDisplay(s_text, true);
 }
 
 
@@ -174,7 +174,7 @@ void setup() {
   Serial1.begin(9600);
 
   writeToDisplay("0EGGGGGGGGGGGGGGGGGGGG", false);
-  writeToDisplay("0A1initializing...", false);
+  writeToDisplay("0A1initializing...", true);
   
   display.init();
   display.clear();
@@ -235,12 +235,12 @@ void setup() {
     display.display();
     String colors = "0E" + getColorFromIP(WiFi.localIP(), i_wwwPort);
     writeToDisplay(colors, false);
-    writeToDisplay("0A0HTTP://" + WiFi.localIP().toString(), false);
+    writeToDisplay("0A0HTTP://" + WiFi.localIP().toString(), true);
     
     udp.begin(i_udpPort);
   }
   else {
-    writeToDisplay("0A5Error: no network connection", false);
+    writeToDisplay("0A5Error: no network connection", true);
     display.clear();
     display.drawString(0, 0, "Error: could not connect to any network");
     display.display();
@@ -248,12 +248,14 @@ void setup() {
 
   server.on("/api/clear", HTTP_GET, [](AsyncWebServerRequest *request){
     Serial.println("serving: api/clear");
+    s_logApi = "api/clear";
     request->send(200);
     processApiClear();
   });
 
   server.on("/api/led", HTTP_ANY, [](AsyncWebServerRequest *request){
     Serial.println("serving: api/led");
+    s_logApi = "api/led";
     request->send(200);
     String get_chan = "";
     if(request->hasParam("chan")){
@@ -274,6 +276,7 @@ void setup() {
 
   server.on("/api/setcolorandtext", HTTP_POST, [](AsyncWebServerRequest *request){
     Serial.println("serving: api/setcolorandtext");
+    s_logApi = "api/setcolorandtext";
     request->send(200);
   }, onUpload, [](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     if (!index) s_body = "";
@@ -283,6 +286,7 @@ void setup() {
   
   server.on("/api/setdisplay", HTTP_POST, [](AsyncWebServerRequest *request){
     Serial.println("serving: api/setdisplay");
+    s_logApi = "api/setdisplay";
     request->send(200);
   }, onUpload, [](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){
     if (!index) s_body = "";
@@ -291,6 +295,7 @@ void setup() {
   });
 
   server.on("/api", HTTP_GET, [](AsyncWebServerRequest *request){
+    s_logApi = "api-doc";
     request->send(SPIFFS, "/api-doc/displayApi.json", "text/json");
   });
 
