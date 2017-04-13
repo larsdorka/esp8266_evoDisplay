@@ -21,6 +21,9 @@
 #define CONN_LED D0
 #define SCL D1
 #define SDA D2
+#define PWM_RED D5
+#define PWM_GREEN D6
+#define PWM_BLUE D7
 
 const char fileName[] = "/config/wlan.json";
 
@@ -157,6 +160,13 @@ void setup() {
   // put your setup code here, to run once: 
   pinMode(CONN_LED, OUTPUT);
   digitalWrite(CONN_LED, HIGH);
+
+  pinMode(PWM_RED, OUTPUT);
+  analogWrite(PWM_RED, 1023);
+  pinMode(PWM_GREEN, OUTPUT);
+  analogWrite(PWM_GREEN, 1023);
+  pinMode(PWM_BLUE, OUTPUT);
+  analogWrite(PWM_BLUE, 1023);
   
   Serial.begin(9600);
   Serial.println();
@@ -236,10 +246,30 @@ void setup() {
     display.display();
   }
 
-  server.on("/api/clear", HTTP_ANY, [](AsyncWebServerRequest *request){
+  server.on("/api/clear", HTTP_GET, [](AsyncWebServerRequest *request){
     Serial.println("serving: api/clear");
     request->send(200);
     processApiClear();
+  });
+
+  server.on("/api/led", HTTP_ANY, [](AsyncWebServerRequest *request){
+    Serial.println("serving: api/led");
+    request->send(200);
+    String get_chan = "";
+    if(request->hasParam("chan")){
+      AsyncWebParameter* p = request->getParam("chan");
+      get_chan = p->value();
+    }
+    String get_val = "";
+    if(request->hasParam("val")){
+      AsyncWebParameter* p = request->getParam("val");
+      get_val = p->value();
+    }
+    int val = get_val.toInt();
+    val = 1023 - (val << 2);
+    if (get_chan == "R") analogWrite(PWM_RED, val);
+    if (get_chan == "G") analogWrite(PWM_GREEN, val);
+    if (get_chan == "B") analogWrite(PWM_BLUE, val);
   });
 
   server.on("/api/setcolorandtext", HTTP_POST, [](AsyncWebServerRequest *request){
