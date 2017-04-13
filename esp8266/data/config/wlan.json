@@ -1,8 +1,12 @@
 {
   "ssid": [
-    "wisdomnet"
+    "ssid_1",
+	"ssid_2",
+	"ssid_3"
   ],
   "wpa": [
-    "WLan/Dorka1!"
+    "Password_1",
+	"Password_2",
+	"Password_3"
     ]
 }

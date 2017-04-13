@@ -1,19 +1,24 @@
-.style-box {
-    margin: 8px;
-    padding: 8px;
-    border: 1px solid #AAAAAA;
-    background-color: #EEEEEE;
+.style-preview {
     display: flex;
-    flex-direction: column;
-    width: 400px;
-}
-
-.style-box-title {
+    flex-direction: row;
+    margin-top: 12px;
+    margin-bottom: 8px;
     font-weight: bold;
-    font-size: small;
-    margin-bottom: 4px;
+    font-size: xx-large;
 }
 
-.style-box-button {
-    width: 100px;
+.style-red {
+    color: red;
+}
+
+.style-orange {
+    color: orange;
+}
+
+.style-green {
+    color: green;
+}
+
+.style-black {
+    color: black;
 }

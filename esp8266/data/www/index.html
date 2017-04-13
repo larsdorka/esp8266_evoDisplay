@@ -23,6 +23,7 @@
         <ul class="nav nav-tabs" id="myTabs">
             <li role="presentation" class="active"><a href="#static">Static text</a></li>
             <li role="presentation"><a href="#apidoc">API doc</a></li>
+            <li role="presentation"><a href="#led">LED</a></li>
         </ul>
 
         <div class="tab-content">
@@ -76,18 +77,25 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-4">
-                                <button class="btn btn-success btn-lg"
-                                        id="btn_send">
-                                    send
-                                </button>
-                                <button class="btn btn-danger btn-lg"
-                                        id="btn_clear">
-                                    clear
-                                </button>
+                            <div class="well well-lg">
+                                <span class="label label-default">Preview</span>
+                                <div class="style-preview"
+                                     id="previewBox">
+                                </div>
                             </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-1">
+                                    <button class="btn btn-success btn-lg"
+                                            id="btn_send">
+                                        send
+                                    </button>
+                                    <button class="btn btn-danger btn-lg"
+                                            id="btn_clear">
+                                        clear
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -109,18 +117,60 @@
                                 </textarea>
                             </div>
                             <div class="form-group">
-                                <a href="api" download>
+                                <div class="col-md-offset-1">
+                                    <a href="api" download>
+                                        <button class="btn btn-success btn-lg"
+                                                id="btn_download">
+                                            download
+                                        </button>
+                                    </a>
+                                    <a href="api" target="_blank">
+                                        <button class="btn btn-success btn-lg"
+                                                id="btn_open">
+                                            open
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="led">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Controlling the debug LED</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="channelSelect" class="col-md-2 control-label">Channel</label>
+                                <div class="col-md-4">
+                                    <select class="form-control"
+                                            id="channelSelect">
+                                        <option value="R" selected>red</option>
+                                        <option value="G">green</option>
+                                        <option value="B">blue</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="valueInput" class="col-md-2 control-label">Value</label>
+                                <div class="col-md-4">
+                                    <input type="text"
+                                           class="form-control"
+                                           id="valueInput"
+                                           placeholder="select value">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-1">
                                     <button class="btn btn-success btn-lg"
-                                            id="btn_download">
-                                        download
+                                            id="btn_setled">
+                                        set LED
                                     </button>
-                                </a>
-                                <a href="api" target="_blank">
-                                    <button class="btn btn-success btn-lg"
-                                            id="btn_open">
-                                        open
-                                    </button>
-                                </a>
+                                </div>
                             </div>
                         </div>
                     </div>
