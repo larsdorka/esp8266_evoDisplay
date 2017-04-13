@@ -52,6 +52,8 @@ $(function () {
 
 function createPreview() {
     $('#previewBox').empty();
+    $('#btn_send').removeAttr('disabled');
+    $('#errorText').text('');
     var textChars = $('#textContentInput').val().split('');
     var colorChars = $('#colorContentInput').val().split('');
 
@@ -74,10 +76,6 @@ function createPreview() {
                     break;
             }
         }
-    }
-    else {
-        $('#btn_send').removeAttr('disabled');
-        $('#errorText').text('');
     }
 
     for (var i = 0; i < textChars.length; i++) {
