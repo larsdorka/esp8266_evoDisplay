@@ -1,9 +1,3 @@
-// var button = document.getElementById('btn_test');
-// button.addEventListener("click", function () {
-//     var title = document.getElementById('title-id');
-//     title.innerHTML = 'Button has been clicked!';
-// });
-
 $(function () {
     $('#myTabs a[href="#static"]').click(function (e) {
         e.preventDefault();
@@ -60,6 +54,32 @@ function createPreview() {
     $('#previewBox').empty();
     var textChars = $('#textContentInput').val().split('');
     var colorChars = $('#colorContentInput').val().split('');
+
+    if ($('#colorModeSelector').val() == 'content') {
+        if (colorChars.length < textChars.length) {
+            $('#btn_send').attr('disabled', 'true');
+            $('#errorText').text('Invalid: color string to short');
+        }
+        for (var c = 0; c < colorChars.length; c++) {
+            switch (colorChars[c].toUpperCase()) {
+                case 'R':
+                    break;
+                case 'O':
+                    break;
+                case 'G':
+                    break;
+                default:
+                    $('#btn_send').attr('disabled', 'true');
+                    $('#errorText').text('Invalid: color string may only contain "R, O, G"');
+                    break;
+            }
+        }
+    }
+    else {
+        $('#btn_send').removeAttr('disabled');
+        $('#errorText').text('');
+    }
+
     for (var i = 0; i < textChars.length; i++) {
         var appendString = '<div class="';
         switch ($('#colorModeSelector').val()) {
@@ -102,6 +122,17 @@ function createPreview() {
     }
 }
 
+function clearInput() {
+    $('#previewBox').empty();
+    $('#btn_send').removeAttr('disabled');
+    $('#colorContentInput').removeAttr('disabled');
+    $('#errorText').text('');
+    $("#colorContentInput").val("");
+    $("#colorModeSelector").val("content");
+    $("#textContentInput").val("");
+    $("#textModeSelector").val("0");
+}
+
 $(function () {
     $.ajaxSetup({"contentType": "text/json"});
 });
@@ -127,10 +158,7 @@ $(function () {
 $(function () {
     $("#btn_clear").click(
         function () {
-            $("#colorContentInput").val("");
-            $("#colorModeSelector").val("content");
-            $("#textContentInput").val("");
-            $("#textModeSelector").val("0");
+            clearInput();
             $.get("api/clear", function () {
             });
         });
