@@ -115,7 +115,12 @@ function createPreview() {
                 appendString += 'style-black">';
                 break;
         }
-        appendString += textChars[i] + '</div>';
+        if (textChars[i] == ' ') {
+            appendString += '&nbsp;';
+        }
+        else {
+            appendString += textChars[i] + '</div>';
+        }
         $('#previewBox').append(appendString);
     }
 }
